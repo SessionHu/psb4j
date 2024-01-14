@@ -122,6 +122,9 @@ public class Builder {
 
     private List<String> addSources(File sourcepath, List<String> cmdargs) {
         File[] ls = sourcepath.listFiles();
+        if(ls==null) {
+            return cmdargs;
+        }
         for(File file : ls) {
             if(file.isDirectory()) {
                 cmdargs = addSources(file,cmdargs);
@@ -143,6 +146,7 @@ public class Builder {
      */
     public int javac() {
         // base args
+        new File(this.buildpath).mkdirs();
         String[] baseargs = new String[]{
             "javac",
             "-encoding","UTF-8",
@@ -180,7 +184,10 @@ public class Builder {
      */
     public static void copyFile(String[] sourceFile, String targetDir) {
         // mkdirs
-        new File(targetDir).mkdirs();
+        if(targetDir.endsWith("\\") || targetDir.endsWith("/")) {
+            targetDir = targetDir.substring(0,targetDir.length()-1);
+        }
+        Downloader.checkParentDir(targetDir+"/empty");
         // copy
         for(String filepath : sourceFile) {
             File file = new File(filepath);
@@ -206,10 +213,19 @@ public class Builder {
     public int jar(String jarpath, String manifest) {
         // rm jar
         new File(jarpath).delete();
+        // if manifest exists
+        String[] cmd;
+        if(new File(manifest).exists()) {
+            cmd = new String[]{
+                "jar","-cvfm",jarpath,manifest,"-C",this.buildpath,"."
+            };
+        } else {
+            cmd = new String[]{
+                "jar","-cvf",jarpath,"-C",this.buildpath,"."
+            };
+        }
         // pack
-        Command jar = new Command(new String[]{
-            "jar","-cvfm",jarpath,manifest,"-C",this.buildpath,"."
-        },this.pwd);
+        Command jar = new Command(cmd,this.pwd);
         Main.printDividingLine();
         System.out.print(jar.status());
         Main.printDividingLine();
@@ -221,6 +237,19 @@ public class Builder {
         Main.printDividingLine();
         System.out.print(jar.status());
         return jar.getExitCode();
+    }
+
+    public static void download(String[] urls, String targetDir) {
+        for(String url : urls) {
+            try {
+                Downloader downloader = new Downloader(url,targetDir);
+                downloader.download();
+            } catch(IOException e) {
+                e.printStackTrace();
+            } catch(IllegalStateException e) {
+                // do nothing...
+            }
+        }
     }
 
 }

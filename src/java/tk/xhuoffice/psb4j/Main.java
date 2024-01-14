@@ -24,12 +24,15 @@
 
 
 package tk.xhuoffice.psb4j;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 
 public class Main {
+
+    public static final String VERSION = "1.0.0";
 
     private Main() {}
 
@@ -41,13 +44,15 @@ public class Main {
         long starttime = System.currentTimeMillis();
         // arguments
         cmdargs(args);
+        // download libs
+        Builder.download(remote,System.getProperty("user.home")+"/.sessx/lib/");
         // new Builder
         Builder builder = new Builder(buildpath,sourcepath,pwd);
         // javac
         int javac = builder.javac();
         // pack
         if(javac==0) {
-            Builder.copyFile(new String[]{"./README.md","./LICENSE"},"build");
+            Builder.copyFile(extra,buildpath);
             builder.jar(jarpath,manifest);
             printDividingLine();
             System.out.println("Done! ("+(System.currentTimeMillis()-starttime)+"ms)");
@@ -66,8 +71,10 @@ public class Main {
     static String jarpath = "./build/build.jar";
     static String manifest = "./manifest";
     static String pwd = System.getProperty("user.dir");
-    static String buildpath = "./build/";
-    static String sourcepath = "./src/java/";
+    static String buildpath = "./build";
+    static String sourcepath = "./src/java";
+    static String[] remote = new String[0];
+    static String[] extra = new String[0];
 
     private static void cmdargs(String[] argv) {
         if(argv==null || argv.length==0) {
@@ -83,22 +90,37 @@ public class Main {
         if((i=args.indexOf("--jar"))>-1) {
             args.remove(i);
             jarpath = args.get(i);
+            args.remove(i);
         }
         if((i=args.indexOf("--manifest"))>-1) {
             args.remove(i);
             manifest = args.get(i);
+            args.remove(i);
         }
         if((i=args.indexOf("--pwd"))>-1) {
             args.remove(i);
             pwd = args.get(i);
+            args.remove(i);
         }
         if((i=args.indexOf("--build-directory"))>-1) {
             args.remove(i);
             buildpath = args.get(i);
+            args.remove(i);
         }
         if((i=args.indexOf("--sourcepath"))>-1) {
             args.remove(i);
             sourcepath = args.get(i);
+            args.remove(i);
+        }
+        if((i=args.indexOf("--remote-lib"))>-1) {
+            args.remove(i);
+            remote = args.get(i).split(",");
+            args.remove(i);
+        }
+        if((i=args.indexOf("--extra-packin"))>-1) {
+            args.remove(i);
+            extra = args.get(i).split(",");
+            args.remove(i);
         }
     }
 
