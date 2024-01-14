@@ -122,6 +122,10 @@ public class Main {
             extra = args.get(i).split(",");
             args.remove(i);
         }
+        if((i=args.indexOf("--clear"))>-1) {
+            args.remove(i);
+            Builder.rm(buildpath);
+        }
     }
 
 }

@@ -140,6 +140,25 @@ public class Builder {
         return cmdargs;
     }
 
+    public static void rm(String path) {
+        File file = new File(path);
+        if(!file.exists()) {
+            return;
+        }
+        if(file.isDirectory()) {
+            File[] ls = file.listFiles();
+            for(File f : ls) {
+                try {
+                    rm(f.getCanonicalPath());
+                } catch(IOException e) {
+                    rm(f.getAbsolutePath());
+                }
+            }
+        } else {
+            file.delete();
+        }
+    }
+
     /**
      * Run command {@code javac}.
      * @return  Exit code of command {@code javac}.
