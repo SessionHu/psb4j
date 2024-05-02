@@ -32,6 +32,7 @@ import java.util.List;
 
 public class Main {
 
+    public static final String NAME = "Psb4j";
     public static final String VERSION = "1.0.0";
 
     private Main() {}
@@ -64,6 +65,25 @@ public class Main {
 
     private static final String DIVIDING_LINE = "================================================\n";
 
+    private static void printVersionInfo() {
+        System.out.print(NAME + " " + VERSION + "\n");
+    }
+
+    private static void printHelpInfo() {
+        System.out.print(
+            "    --version        Print version message\n"+
+            "    --help           Print this help message\n"+
+            "    --jar            Path of output JAR\n"+
+            "    --manifest       Manifest for JAR\n"+
+            "    --pwd            Set work dirctory\n"+
+            "    --build-dirctory Set output dirctory\n"+
+            "    --sourcepath     Where to find .java code\n"+
+            "    --remote-lib     Remote library URL\n"+
+            "    --extra-packin   Extra files added to JAR\n"+
+            "    --clear          Remove files at output dirctory\n"
+        );
+    }
+
     public static void printDividingLine() {
         System.out.print(DIVIDING_LINE);
     }
@@ -87,6 +107,17 @@ public class Main {
         }
         int i;
         // process
+        if((i=args.indexOf("--version"))>-1) {
+            args.remove(i);
+            printVersionInfo();
+            System.exit(0);
+        }
+        if((i=args.indexOf("--help"))>-1) {
+            args.remove(i);
+            printVersionInfo();
+            printHelpInfo();
+            System.exit(0);
+        }
         if((i=args.indexOf("--jar"))>-1) {
             args.remove(i);
             jarpath = args.get(i);

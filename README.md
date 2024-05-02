@@ -14,7 +14,18 @@
 
 ## 使用 Usage
 
-- TODO
+```text
+    --version        Print version message
+    --help           Print this help message
+    --jar            Path of output JAR
+    --manifest       Manifest for JAR
+    --pwd            Set work dirctory
+    --build-dirctory Set output dirctory
+    --sourcepath     Where to find .java code
+    --remote-lib     Remote library URL
+    --extra-packin   Extra files added to JAR
+    --clear          Remove files at output dirctory
+```
 
 ## 开发 Dev
 
