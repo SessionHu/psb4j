@@ -35,7 +35,7 @@ public class Main {
     public static final String NAME;
     public static final String VERSION;
     static {
-        Package pkg = Main.class.getClass().getPackage();
+        Package pkg = Main.class.getPackage();
         NAME = pkg.getImplementationTitle();
         VERSION = pkg.getImplementationVersion();
     }
