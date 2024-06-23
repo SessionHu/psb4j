@@ -58,7 +58,7 @@ public class Main {
         int javac = builder.javac();
         // pack
         if(javac==0) {
-            Builder.copyFile(resources, buildpath);
+            Builder.copyFile(resources, buildpath, false);
             Builder.copyFile(extra,buildpath);
             builder.jar(jarpath,manifest);
             printDividingLine();

@@ -199,10 +199,20 @@ public class Builder {
 
     /**
      * Copy file to target directory.
-     * @param sourceFile  paths of source files
-     * @param targetDir   target directory
+     * @param sourceFile
+     * @param targetDir
      */
     public static void copyFile(String[] sourceFile, String targetDir) {
+        copyFile(sourceFile, targetDir, true);
+    }
+
+    /**
+     * Copy file to target directory.
+     * @param sourceFile  paths of source files
+     * @param targetDir   target directory
+     * @param suffix      copy sourceFile full path
+     */
+    public static void copyFile(String[] sourceFile, String targetDir, boolean suffix) {
         // mkdirs
         if(targetDir.endsWith("\\") || targetDir.endsWith("/")) {
             targetDir = targetDir.substring(0,targetDir.length()-1);
@@ -218,7 +228,11 @@ public class Builder {
                     for (int i = 0; i < ls.length; i++) {
                         lstr[i] = ls[i].getPath();
                     }
-                    copyFile(lstr, targetDir + "/" + file.getName());
+                    if(!suffix) {
+                        copyFile(lstr, targetDir, true);
+                    } else {
+                        copyFile(lstr, targetDir + "/" + file.getName(), true);
+                    }
                 }
                 continue;
             }
