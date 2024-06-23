@@ -211,6 +211,7 @@ public class Builder {
         // copy
         for(String filepath : sourceFile) {
             File file = new File(filepath);
+            if (!file.exists()) continue;
             if (file.isDirectory()) {
                 File[] ls = file.listFiles();
                 if (ls.length > 0) {

@@ -32,8 +32,13 @@ import java.util.List;
 
 public class Main {
 
-    public static final String NAME = "Psb4j";
-    public static final String VERSION = "1.0.0";
+    public static final String NAME;
+    public static final String VERSION;
+    static {
+        Package pkg = Main.class.getClass().getPackage();
+        NAME = pkg.getImplementationTitle();
+        VERSION = pkg.getImplementationVersion();
+    }
 
     private Main() {}
 
@@ -53,6 +58,7 @@ public class Main {
         int javac = builder.javac();
         // pack
         if(javac==0) {
+            Builder.copyFile(resources, buildpath);
             Builder.copyFile(extra,buildpath);
             builder.jar(jarpath,manifest);
             printDividingLine();
@@ -66,7 +72,7 @@ public class Main {
     private static final String DIVIDING_LINE = "================================================\n";
 
     private static void printVersionInfo() {
-        System.out.print(NAME + " " + VERSION + "\n");
+        System.out.printf("%s %s\n", NAME, VERSION);
     }
 
     private static void printHelpInfo() {
@@ -78,6 +84,7 @@ public class Main {
             "    --pwd            Set work dirctory\n"+
             "    --build-dirctory Set output dirctory\n"+
             "    --sourcepath     Where to find .java code\n"+
+            "    --resources      Copy files in resources to JAR\n"+
             "    --remote-lib     Remote library URL\n"+
             "    --extra-packin   Extra files added to JAR\n"+
             "    --clear          Remove files at output dirctory\n"
@@ -93,6 +100,7 @@ public class Main {
     static String pwd = System.getProperty("user.dir");
     static String buildpath = "./build";
     static String sourcepath = "./src/java";
+    static String[] resources = {"./src/resources"};
     static String[] remote = new String[0];
     static String[] extra = new String[0];
 
@@ -141,6 +149,11 @@ public class Main {
         if((i=args.indexOf("--sourcepath"))>-1) {
             args.remove(i);
             sourcepath = args.get(i);
+            args.remove(i);
+        }
+        if((i=args.indexOf("--resources"))>-1) {
+            args.remove(i);
+            resources = args.get(i).split(",");
             args.remove(i);
         }
         if((i=args.indexOf("--remote-lib"))>-1) {
