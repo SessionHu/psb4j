@@ -14,18 +14,38 @@
 
 ## 使用 Usage
 
-```text
-    --version        Print version message
-    --help           Print this help message
-    --jar            Path of output JAR
-    --manifest       Manifest for JAR
-    --pwd            Set work dirctory
-    --build-dirctory Set output dirctory
-    --sourcepath     Where to find .java code
-    --remote-lib     Remote library URL
-    --extra-packin   Extra files added to JAR
-    --clear          Remove files at output dirctory
-```
+- 帮助信息
+
+  ```text
+      --version        Print version message
+      --help           Print this help message
+      --jar            Path of output JAR
+      --manifest       Manifest for JAR
+      --pwd            Set work dirctory
+      --build-dirctory Set output dirctory
+      --sourcepath     Where to find .java code
+      --remote-lib     Remote library URL
+      --extra-packin   Extra files added to JAR
+      --clear          Remove files at output dirctory
+  ```
+
+- 示例构建脚本. `./README.md,./LICENSE` 替换为你自己项目内需要的文件, `JARNAME` 替换为你自己的文件名.
+
+  ```bash
+  #!/bin/sh
+  # https://github.com/SessionHu/psb4j
+  psb4j_args="--extra-packin ./README.md,./LICENSE --jar ./build/JARNAME.jar --clear"
+  if [ -s ~/.sessx/lib/psb4j.jar ]; then
+      java -jar ~/.sessx/lib/psb4j.jar ${psb4j_args}
+  else
+      if [ -s ./psb4j.jar ] ; then
+          java -jar ./psb4j.jar ${psb4j_args}
+      else
+          wget https://github.com/SessionHu/psb4j/releases/latest/download/psb4j.jar -O ~/.sessx/lib/psb4j.jar
+          java -jar ~/.sessx/lib/psb4j.jar ${psb4j_args}
+      fi
+  fi
+  ```
 
 ## 开发 Dev
 
