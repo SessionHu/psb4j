@@ -211,8 +211,24 @@ public class Builder {
         // copy
         for(String filepath : sourceFile) {
             File file = new File(filepath);
+            if (file.isDirectory()) {
+                File[] ls = file.listFiles();
+                if (ls.length > 0) {
+                    String[] lstr = new String[ls.length];
+                    for (int i = 0; i < ls.length; i++) {
+                        try {
+                            lstr[i] = ls[i].getCanonicalPath();
+                        } catch (IOException e) {
+                            lstr[i] = ls[i].getAbsolutePath();
+                        }
+                    }
+                    copyFile(lstr, targetDir);
+                }
+                continue;
+            }
+            File tfil = new File(targetDir+"/"+file.getName());
             try(InputStream in = new FileInputStream(file);
-                OutputStream out = new FileOutputStream(targetDir+"/"+file.getName())) {
+                OutputStream out = new FileOutputStream(tfil)) {
                 while(in.available()>0) {
                     out.write(in.read());
                 }
@@ -221,6 +237,7 @@ public class Builder {
             } catch(IOException e) {
                 e.printStackTrace();
             }
+            tfil.setLastModified(file.lastModified());
         }
     }
 
