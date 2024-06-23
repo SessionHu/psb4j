@@ -155,9 +155,9 @@ public class Builder {
                     rm(f.getAbsolutePath());
                 }
             }
-        } else {
-            file.delete();
         }
+        System.out.printf("正在删除 %s\n", file.getPath());
+        file.delete();
     }
 
     /**
@@ -207,7 +207,6 @@ public class Builder {
         if(targetDir.endsWith("\\") || targetDir.endsWith("/")) {
             targetDir = targetDir.substring(0,targetDir.length()-1);
         }
-        Downloader.checkParentDir(targetDir+"/empty");
         // copy
         for(String filepath : sourceFile) {
             File file = new File(filepath);
@@ -217,17 +216,14 @@ public class Builder {
                 if (ls.length > 0) {
                     String[] lstr = new String[ls.length];
                     for (int i = 0; i < ls.length; i++) {
-                        try {
-                            lstr[i] = ls[i].getCanonicalPath();
-                        } catch (IOException e) {
-                            lstr[i] = ls[i].getAbsolutePath();
-                        }
+                        lstr[i] = ls[i].getPath();
                     }
-                    copyFile(lstr, targetDir);
+                    copyFile(lstr, targetDir + "/" + file.getName());
                 }
                 continue;
             }
             File tfil = new File(targetDir+"/"+file.getName());
+            Downloader.checkParentDir(tfil.getPath());
             try(InputStream in = new FileInputStream(file);
                 OutputStream out = new FileOutputStream(tfil)) {
                 while(in.available()>0) {
