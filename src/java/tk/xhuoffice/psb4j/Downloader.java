@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 
@@ -48,12 +50,12 @@ public class Downloader {
     
     private String contentType = null;
     
-    public Downloader(String url, String fileDirPath) throws IOException {
+    public Downloader(String url, String fileDirPath) throws IOException, URISyntaxException {
         // file & path
         if(!fileDirPath.endsWith("/")) {
             fileDirPath += "/";
         }
-        URL url0 = new URL(url);
+        URL url0 = new URI(url).toURL();
         this.fname = Paths.get(url0.getPath()).getFileName().toString();
         this.path = fileDirPath + this.fname;
         this.file = new File(this.path);

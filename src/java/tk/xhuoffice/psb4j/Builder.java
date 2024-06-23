@@ -31,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -263,7 +264,7 @@ public class Builder {
             try {
                 Downloader downloader = new Downloader(url,targetDir);
                 downloader.download();
-            } catch(IOException e) {
+            } catch(IOException | URISyntaxException e) {
                 e.printStackTrace();
             } catch(IllegalStateException e) {
                 // do nothing...

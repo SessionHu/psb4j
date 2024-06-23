@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo -e "Processing files from last build..."
 rm -r build/
 mkdir build/
