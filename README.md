@@ -1,6 +1,6 @@
 <h1 align=center>Project Simple Builder for Java</h1>
 
-**本项目停止维护, 请使用 GNU Make**
+### **本项目停止维护, 请使用 GNU Make**
 
 
 ## 引言 Intro
