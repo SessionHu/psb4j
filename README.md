@@ -1,5 +1,8 @@
 <h1 align=center>Project Simple Builder for Java</h1>
 
+**本项目停止维护, 请使用 GNU Make**
+
+
 ## 引言 Intro
 
 > 本项目始于2024年1月4日晚, 由于本人 shell 不好, 及 Gradle 性能不佳, 对于 Java 项目构建存在许多不便, 故想到创建此项目.  
